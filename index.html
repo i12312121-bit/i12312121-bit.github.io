@@ -51,6 +51,7 @@
       z-index: 0;
       overflow: hidden;
       background: radial-gradient(circle at 75% 18%, #1e2b58 0%, #0b112c 48%, #050816 100%);
+      touch-action: none;
     }
 
     #riverCanvas {
@@ -58,6 +59,9 @@
       height: 100%;
       display: block;
       cursor: pointer;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     /* App Layout Shell */
@@ -221,13 +225,11 @@
 
     /* Studio Card */
     .studio-card {
-      background: var(--surface);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border);
+      background: transparent;
+      border: none;
       border-radius: var(--radius);
       padding: 18px;
-      box-shadow: var(--shadow);
+      box-shadow: none;
       max-height: calc(100vh - 150px);
       overflow-y: auto;
       transition: transform 0.3s ease, opacity 0.3s ease;
@@ -248,8 +250,8 @@
     /* Live Krathong Preview Stage inside Studio */
     .preview-stage {
       position: relative;
-      background: radial-gradient(circle at 50% 65%, rgba(251, 191, 36, 0.18), rgba(12, 20, 48, 0.85) 75%);
-      border: 1px solid rgba(251, 191, 36, 0.3);
+      background: transparent;
+      border: none;
       border-radius: 14px;
       padding: 12px;
       margin-bottom: 14px;
@@ -372,7 +374,7 @@
     .option-chip {
       font-family: var(--font-sans);
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      border: 1px solid transparent; /* NO BORDERS/FRAMES! */
       border-radius: 10px;
       padding: 8px 10px;
       color: var(--ink);
@@ -385,14 +387,13 @@
     }
 
     .option-chip:hover {
-      border-color: rgba(251, 191, 36, 0.5);
-      background: rgba(251, 191, 36, 0.1);
+      background: rgba(255, 255, 255, 0.1);
     }
 
     .option-chip.selected {
-      background: rgba(251, 191, 36, 0.22);
+      background: rgba(251, 191, 36, 0.2);
       border-color: var(--gold);
-      box-shadow: 0 0 12px rgba(251, 191, 36, 0.22);
+      box-shadow: 0 0 12px rgba(251, 191, 36, 0.15);
     }
 
     .chip-title {
@@ -404,8 +405,7 @@
     }
 
     .chip-desc {
-      font-size: 11px;
-      color: var(--muted);
+      display: none; /* REMOVE DESCRIPTIONS TO MAKE IT INCREDIBLY COMPACT FOR MOBILE SCROLLING! */
     }
 
     /* Color Swatches */
@@ -1160,7 +1160,7 @@
       <!-- Legs and body -->
       <path d="M 60 115 Q 75 110 80 100 Q 82 82 72 80 Q 64 78 60 90 Q 56 100 48 108 C 44 112 40 115 44 118 Z" fill="#db2777" />
       <!-- Sabai sash drape -->
-      <path d="M 72 82 Q 62 86 58 98 Q 50 106 48 116" stroke="#fbcfe8" stroke-width="2" fill="none" />
+      <path d="M 72 82 Q 62 86 58 98 Q 50 106 48 116" stroke="#fbcfe8" stroke-width="3.5" fill="none" />
       <!-- Head and face -->
       <rect x="68" y="72" width="6" height="10" fill="#fcd34d" rx="2" />
       <circle cx="71" cy="66" r="10" fill="#fcd34d" />
