@@ -1096,32 +1096,9 @@
 
       <!-- Right: Dedication Banner & Interactive Water Prompts -->
       <div class="scene-overlay-column">
-        <div class="dedication-banner interactive-panel">
-          <p class="dedication-title" id="bannerTitle">✨ ค่ำคืนจันทร์เพ็ญสำหรับคุณคนเดียว ✨</p>
-          <p class="dedication-note" id="bannerSub">
-            สายน้ำแห่งนี้เงียบสงบและเป็นของคุณเพียงผู้เดียว คลิกที่ผิวน้ำเพื่อสร้างระลอกคลื่นพัดพากระทง หรือคลิกที่กระทงเพื่ออ่านคำอธิษฐาน
-          </p>
-        </div>
       </div>
     </div>
 
-    <!-- Bottom Interactive Mode Bar -->
-    <footer class="bottom-dock interactive-panel">
-      <div class="dock-controls" id="waterModeControls">
-        <button type="button" class="btn active-mode" data-mode="ripple">
-          💧 สัมผัสผิวน้ำสร้างคลื่น
-        </button>
-        <button type="button" class="btn" data-mode="fish">
-          🐟 โปรยอาหารปลาคาร์ปมงคล
-        </button>
-        <button type="button" class="btn" data-mode="firework">
-          🎇 คลิกท้องฟ้าจุดพลุ
-        </button>
-        <button type="button" class="btn" data-mode="moon">
-          🌕 เปลี่ยนรัศมีดวงจันทร์
-        </button>
-      </div>
-    </footer>
   </div>
 
   <!-- Floating Restore UI Button -->
@@ -1918,8 +1895,14 @@
                 state.floatingKrathongs.push(sharedK);
                 
                 // Display welcoming banner/notification in the info banner
-                document.getElementById('bannerTitle').textContent = `✨ พบกระทงส่งต่อจากคุณ ${owner}! ✨`;
-                document.getElementById('bannerSub').textContent = `กระทงนี้กำลังลอยร่วมสายน้ำส่วนตัวของคุณ คลิกที่ตัวกระทงเพื่อเปิดอ่านคำอธิษฐานของเขาได้เลย`;
+                const bannerTitle = document.getElementById('bannerTitle');
+                if (bannerTitle) {
+                  bannerTitle.textContent = `✨ พบกระทงส่งต่อจากคุณ ${owner}! ✨`;
+                }
+                const bannerSub = document.getElementById('bannerSub');
+                if (bannerSub) {
+                  bannerSub.textContent = `กระทงนี้กำลังลอยร่วมสายน้ำส่วนตัวของคุณ คลิกที่ตัวกระทงเพื่อเปิดอ่านคำอธิษฐานของเขาได้เลย`;
+                }
                 
                 // Also prep the owner name input to be friendly
                 document.getElementById('ownerNameInput').placeholder = `เช่น ร่วมลอยกับคุณ ${owner}`;
@@ -2621,7 +2604,10 @@
         const val = ownerNameInput.value.trim();
         state.ownerName = val || 'คุณเพียงคนเดียว';
         document.getElementById('headerOwnerName').textContent = state.ownerName;
-        document.getElementById('bannerTitle').textContent = `✨ ท่าน้ำส่วนตัวของ ${state.ownerName} ✨`;
+        const bannerTitle = document.getElementById('bannerTitle');
+        if (bannerTitle) {
+          bannerTitle.textContent = `✨ ท่าน้ำส่วนตัวของ ${state.ownerName} ✨`;
+        }
       });
 
       // Random Blessing Button
