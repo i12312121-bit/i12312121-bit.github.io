@@ -1,0 +1,2416 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ลอยกระทงเคียงคู่ — คืนเพ็ญแห่งรัก</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-night: #060b19;
+      --bg-river: #0a1631;
+      --surface: rgba(12, 22, 46, 0.88);
+      --surface-elevated: rgba(20, 34, 68, 0.92);
+      --border: rgba(245, 198, 93, 0.26);
+      --border-strong: rgba(245, 198, 93, 0.65);
+      --ink: #fcf7eb;
+      --muted: #b8c4dc;
+      --gold: #f5c65d;
+      --gold-bright: #ffe08a;
+      --gold-ink: #1e1405;
+      --rose: #f48fb1;
+      --danger: #fca5a5;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 16px 40px rgba(2, 6, 18, 0.65);
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --font-sans: 'Prompt', -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, sans-serif;
+      --font-display: 'Charm', Georgia, serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      background: var(--bg-night);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    .app-shell {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .topbar {
+      position: relative;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      padding: var(--space-3) var(--space-6);
+      background: linear-gradient(180deg, rgba(6, 11, 25, 0.92) 0%, rgba(6, 11, 25, 0.45) 100%);
+      border-bottom: 1px solid rgba(245, 198, 93, 0.16);
+      backdrop-filter: blur(8px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .brand-emblem {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 35%, rgba(255, 224, 138, 0.3), rgba(245, 198, 93, 0.08));
+      border: 1px solid var(--border);
+    }
+
+    .brand-title {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+      font-weight: 700;
+      color: var(--gold-bright);
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    /* Buttons */
+    .btn {
+      font: inherit;
+      font-size: 0.92rem;
+      font-weight: 500;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      transition: transform 0.16s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--gold-bright);
+      outline-offset: 2px;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ffd97d 0%, #f0a830 100%);
+      color: var(--gold-ink);
+      font-weight: 600;
+      box-shadow: 0 4px 18px rgba(245, 180, 60, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #ffe59e 0%, #f7b744 100%);
+      box-shadow: 0 6px 24px rgba(245, 180, 60, 0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(20, 34, 68, 0.78);
+      color: var(--ink);
+      border-color: var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(30, 49, 94, 0.92);
+      border-color: var(--border-strong);
+    }
+
+    .music-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 8px rgba(74, 222, 128, 0.85);
+      display: inline-block;
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .music-indicator.is-muted {
+      background: rgba(184, 196, 220, 0.45);
+      box-shadow: none;
+    }
+
+    /* Main Workspace: Scenic River + Composer Panel */
+    .stage-layout {
+      position: relative;
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      min-height: calc(100vh - 69px);
+    }
+
+    .river-viewport {
+      position: relative;
+      width: 100%;
+      min-height: 540px;
+      height: 100%;
+      overflow: hidden;
+      background: linear-gradient(180deg, #050916 0%, #0d1c3d 42%, #08152e 100%);
+    }
+
+    #riverCanvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .scene-hint {
+      position: absolute;
+      left: var(--space-4);
+      bottom: var(--space-4);
+      z-index: 10;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(8, 15, 34, 0.78);
+      border: 1px solid rgba(245, 198, 93, 0.22);
+      color: var(--muted);
+      font-size: 0.8rem;
+      pointer-events: none;
+      backdrop-filter: blur(6px);
+    }
+
+    /* Composer Panel */
+    .composer-drawer {
+      position: relative;
+      z-index: 15;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: var(--space-6);
+      backdrop-filter: blur(14px);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .composer-drawer.is-collapsed {
+      display: none;
+    }
+
+    @media (min-width: 1024px) {
+      .stage-layout {
+        grid-template-columns: minmax(0, 1fr) 420px;
+      }
+      .river-viewport {
+        min-height: calc(100vh - 69px);
+      }
+      .composer-drawer {
+        border-top: none;
+        border-left: 1px solid var(--border);
+        max-height: calc(100vh - 69px);
+        overflow-y: auto;
+      }
+      .composer-drawer.is-collapsed {
+        display: none;
+      }
+      .stage-layout.panel-hidden {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-3);
+    }
+
+    .panel-title {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--gold-bright);
+      line-height: 1.25;
+    }
+
+    .panel-desc {
+      margin: 4px 0 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .icon-close {
+      background: transparent;
+      border: 1px solid rgba(245, 198, 93, 0.22);
+      color: var(--muted);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .icon-close:hover {
+      color: var(--ink);
+      border-color: var(--gold);
+      background: rgba(245, 198, 93, 0.1);
+    }
+
+    .icon-close:focus-visible {
+      outline: 2px solid var(--gold-bright);
+      outline-offset: 2px;
+    }
+
+    /* Krathong Selector Grid */
+    .section-label {
+      display: block;
+      font-size: 0.86rem;
+      font-weight: 500;
+      color: var(--gold-bright);
+      margin-bottom: var(--space-2);
+    }
+
+    .krathong-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-3);
+    }
+
+    @media (min-width: 600px) and (max-width: 1023px) {
+      .krathong-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .krathong-card {
+      font: inherit;
+      text-align: left;
+      background: rgba(18, 31, 62, 0.72);
+      border: 1px solid rgba(245, 198, 93, 0.2);
+      border-radius: var(--radius-md);
+      padding: var(--space-3);
+      color: var(--ink);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+      transition: transform 0.16s ease, border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .krathong-card:hover {
+      border-color: rgba(245, 198, 93, 0.55);
+      background: rgba(25, 43, 84, 0.85);
+      transform: translateY(-2px);
+    }
+
+    .krathong-card:focus-visible {
+      outline: 2px solid var(--gold-bright);
+      outline-offset: 2px;
+    }
+
+    .krathong-card[aria-pressed="true"] {
+      border-color: var(--gold-bright);
+      background: linear-gradient(180deg, rgba(50, 39, 22, 0.72) 0%, rgba(24, 38, 74, 0.92) 100%);
+      box-shadow: 0 0 0 1px var(--gold-bright), 0 8px 20px rgba(245, 198, 93, 0.18);
+    }
+
+    .krathong-thumb {
+      width: 96px;
+      height: 76px;
+      display: grid;
+      place-items: center;
+    }
+
+    .krathong-thumb svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .krathong-name {
+      font-size: 0.84rem;
+      font-weight: 600;
+      text-align: center;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+
+    .krathong-detail {
+      font-size: 0.73rem;
+      text-align: center;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    /* Form Controls */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 0.83rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .field input,
+    .field textarea {
+      font: inherit;
+      font-size: 0.9rem;
+      color: var(--ink);
+      background: rgba(8, 15, 33, 0.78);
+      border: 1px solid rgba(245, 198, 93, 0.25);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: rgba(184, 196, 220, 0.52);
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 0 3px rgba(245, 198, 93, 0.18);
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 78px;
+    }
+
+    .form-error {
+      margin: 0;
+      font-size: 0.82rem;
+      color: var(--danger);
+      min-height: 1.2em;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px 20px;
+      font-size: 0.98rem;
+    }
+
+    /* Wish Viewer Modal / Card */
+    .wish-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      background: rgba(3, 7, 18, 0.65);
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-4);
+    }
+
+    .wish-modal-backdrop[hidden] {
+      display: none;
+    }
+
+    .wish-card {
+      width: 100%;
+      max-width: 420px;
+      background: radial-gradient(circle at 50% 0%, rgba(56, 42, 22, 0.95), rgba(13, 23, 49, 0.98) 70%);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      box-shadow: var(--shadow);
+      text-align: center;
+      position: relative;
+    }
+
+    .wish-card-close {
+      position: absolute;
+      top: var(--space-3);
+      right: var(--space-3);
+    }
+
+    .wish-preview-svg {
+      width: 132px;
+      height: 104px;
+      margin: 0 auto var(--space-3);
+    }
+
+    .wish-badge {
+      display: inline-block;
+      padding: 3px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      background: rgba(244, 143, 177, 0.16);
+      border: 1px solid rgba(244, 143, 177, 0.45);
+      color: #fbcfe8;
+      margin-bottom: var(--space-2);
+    }
+
+    .wish-badge.ambient {
+      background: rgba(245, 198, 93, 0.14);
+      border-color: rgba(245, 198, 93, 0.35);
+      color: var(--gold-bright);
+    }
+
+    .wish-couple-names {
+      margin: 0 0 var(--space-2);
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      color: var(--gold-bright);
+    }
+
+    .wish-model-type {
+      margin: 0 0 var(--space-3);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .wish-message {
+      margin: 0;
+      padding: var(--space-4);
+      border-radius: var(--radius-md);
+      background: rgba(6, 11, 25, 0.55);
+      border: 1px solid rgba(245, 198, 93, 0.18);
+      font-size: 0.95rem;
+      color: var(--ink);
+      line-height: 1.6;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-emblem" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+            <path d="M16 4C18 8 18 11 16 13C14 11 14 8 16 4Z" fill="#FFE08A"/>
+            <path d="M8 21C10 16 14 15 16 15C18 15 22 16 24 21C21 24 11 24 8 21Z" fill="#F48FB1"/>
+            <path d="M5 23C9 21 23 21 27 23C25 27 7 27 5 23Z" fill="#34D399"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">ลอยกระทงเคียงคู่</h1>
+          <p class="brand-subtitle">ค่ำคืนจันทร์เพ็ญ อธิษฐานรักกลางสายน้ำ</p>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <button type="button" id="musicToggleBtn" class="btn btn-secondary" aria-pressed="true" aria-label="เปิดหรือปิดเสียงเพลงบรรเลง">
+          <span id="musicDot" class="music-indicator" aria-hidden="true"></span>
+          <span id="musicLabel">เสียงเพลง: เปิด</span>
+        </button>
+        <button type="button" id="toggleComposerBtn" class="btn btn-secondary" aria-expanded="true" aria-controls="composerDrawer">
+          ซ่อนแผงจัดกระทง
+        </button>
+      </div>
+    </header>
+
+    <main id="stageLayout" class="stage-layout">
+      <section class="river-viewport" aria-label="บรรยากาศริมน้ำลอยกระทง">
+        <canvas id="riverCanvas"></canvas>
+        <div class="scene-hint">คลิกกระทงเพื่ออ่านคำอธิษฐาน • แตะผิวน้ำเรียกปลา • แตะท้องฟ้าปล่อยโคมลอย</div>
+      </section>
+
+      <aside id="composerDrawer" class="composer-drawer" aria-label="เลือกกระทงและเขียนคำอธิษฐานให้คนรัก">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">จัดกระทงคู่รัก</h2>
+            <p class="panel-desc">เลือกรูปทรงกระทงสำเร็จรูป เขียนชื่อและคำอธิษฐานลงสู่สายน้ำ</p>
+          </div>
+          <button type="button" id="closeDrawerBtn" class="icon-close" aria-label="พับเก็บแผงจัดกระทง">
+            ✕
+          </button>
+        </div>
+
+        <div>
+          <span class="section-label" id="krathongGroupLabel">เลือกรูปแบบกระทงสำเร็จรูป (6 รูปทรง)</span>
+          <div id="krathongGrid" class="krathong-grid" role="group" aria-labelledby="krathongGroupLabel">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <form id="floatForm" novalidate>
+          <div class="field">
+            <label for="loverName">ชื่อ</label>
+            <input type="text" id="loverName" maxlength="32" placeholder="เช่น จันทร์เจ้า" autocomplete="off">
+          </div>
+
+          <div class="field" style="margin-top: var(--space-3);">
+            <label for="wishInput">คำอธิษฐานถึงคนรัก</label>
+            <textarea id="wishInput" maxlength="180" placeholder="เช่น ขอให้ความรักของเราสว่างไสวและอบอุ่นดั่งแสงจันทร์ในคืนวันเพ็ญตลอดไป"></textarea>
+          </div>
+
+          <p id="formError" class="form-error" role="alert" aria-live="polite"></p>
+
+          <button type="submit" class="btn btn-primary submit-btn">
+            ปล่อยกระทงอธิษฐานรักลงสู่สายน้ำ
+          </button>
+        </form>
+      </aside>
+    </main>
+
+    <!-- Modal for inspecting a floating krathong -->
+    <div id="wishModal" class="wish-modal-backdrop" hidden>
+      <div class="wish-card" role="dialog" aria-modal="true" aria-labelledby="modalCoupleTitle">
+        <button type="button" id="closeModalBtn" class="icon-close wish-card-close" aria-label="ปิดหน้าต่างคำอธิษฐาน">✕</button>
+        <div id="modalKrathongSvg" class="wish-preview-svg" aria-hidden="true"></div>
+        <span id="modalBadge" class="wish-badge">กระทงคู่รัก</span>
+        <h3 id="modalCoupleTitle" class="wish-couple-names"></h3>
+        <p id="modalModelName" class="wish-model-type"></p>
+        <p id="modalWishText" class="wish-message"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      if (typeof CanvasRenderingContext2D !== 'undefined' && !CanvasRenderingContext2D.prototype.roundRect) {
+        CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+          const rad = Math.min(typeof r === 'number' ? r : 0, Math.abs(w) / 2, Math.abs(h) / 2);
+          this.moveTo(x + rad, y);
+          this.arcTo(x + w, y, x + w, y + h, rad);
+          this.arcTo(x + w, y + h, x, y + h, rad);
+          this.arcTo(x, y + h, x, y, rad);
+          this.arcTo(x, y, x + w, y, rad);
+          this.closePath();
+          return this;
+        };
+      }
+
+      /* =====================================================================
+         1. DISTINCT READY-MADE KRATHONG DESIGNS (Structural shapes, not recolors)
+         ===================================================================== */
+      const KRATHONG_MODELS = [
+        {
+          id: 'lotus_leaf',
+          name: 'กระทงใบตองกลีบบัวพับจีบ',
+          detail: 'ใบตองจีบเล็บครุฑซ้อนกลีบบัวหลวง ดอกดาวเรือง ธูปเทียน',
+          svg: `
+            <svg viewBox="-54 -52 108 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="0" cy="18" rx="44" ry="11" fill="#0c3b26"/>
+              <rect x="-40" y="9" width="80" height="10" rx="5" fill="#17693a"/>
+              <path d="M-38 11 L-31 -4 L-23 11 L-15 -7 L-7 11 L0 -9 L7 11 L15 -7 L23 11 L31 -4 L38 11 Z" fill="#239b56" stroke="#a7f3d0" stroke-width="0.8"/>
+              <path d="M-28 12 L-20 -1 L-11 12 L0 -4 L11 12 L20 -1 L28 12 Z" fill="#f472b6"/>
+              <circle cx="-16" cy="11" r="4.5" fill="#fbbf24"/>
+              <circle cx="0" cy="12" r="5" fill="#f59e0b"/>
+              <circle cx="16" cy="11" r="4.5" fill="#fbbf24"/>
+              <line x1="-5" y1="6" x2="-8" y2="-24" stroke="#d97706" stroke-width="1.4"/>
+              <line x1="5" y1="6" x2="8" y2="-24" stroke="#d97706" stroke-width="1.4"/>
+              <rect x="-2.2" y="-18" width="4.4" height="24" rx="1.5" fill="#fde68a"/>
+              <path d="M0 -33 C4 -27 4 -21 0 -18 C-4 -21 -4 -27 0 -33 Z" fill="#fef08a"/>
+              <path d="M0 -29 C2 -25 2 -21 0 -19 C-2 -21 -2 -25 0 -29 Z" fill="#f97316"/>
+            </svg>`
+        },
+        {
+          id: 'twin_swan',
+          name: 'กระทงหงส์คู่เคียงใจ',
+          detail: 'หงส์ขาวคู่โน้มคอจรดเป็นรูปหัวใจ ประดับปีกมาลัยดอกพุด',
+          svg: `
+            <svg viewBox="-54 -52 108 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="0" cy="18" rx="42" ry="10" fill="#cbd5e1"/>
+              <path d="M-38 14 C-26 24 26 24 38 14 C32 4 -32 4 -38 14 Z" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/>
+              <!-- Feather wings -->
+              <path d="M-34 12 C-44 2 -36 -6 -22 4 C-28 -4 -18 -8 -10 6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+              <path d="M34 12 C44 2 36 -6 22 4 C28 -4 18 -8 10 6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+              <!-- Twin Swan Necks forming Heart -->
+              <path d="M-16 8 C-26 -8 -22 -28 -8 -28 C-2 -28 -1 -21 0 -17" stroke="#ffffff" stroke-width="5.2" stroke-linecap="round" fill="none"/>
+              <path d="M16 8 C26 -8 22 -28 8 -28 C2 -28 1 -21 0 -17" stroke="#ffffff" stroke-width="5.2" stroke-linecap="round" fill="none"/>
+              <!-- Beaks touching -->
+              <polygon points="-2,-18 0,-15 -5,-15" fill="#f59e0b"/>
+              <polygon points="2,-18 0,-15 5,-15" fill="#f59e0b"/>
+              <!-- Roses & central candle -->
+              <circle cx="-8" cy="11" r="4" fill="#fb7185"/>
+              <circle cx="8" cy="11" r="4" fill="#fb7185"/>
+              <rect x="-2" y="-9" width="4" height="19" rx="1.5" fill="#fbcfe8"/>
+              <path d="M0 -21 C3.5 -16 3.5 -11 0 -9 C-3.5 -11 -3.5 -16 0 -21 Z" fill="#fde047"/>
+            </svg>`
+        },
+        {
+          id: 'coconut_shell',
+          name: 'กระทงกะลามะพร้าวสลักลาย',
+          detail: 'กะลาขัดเงาแกะขอบลายไทย ประดับกล้วยไม้และเทียนหอมลอยน้ำ',
+          svg: `
+            <svg viewBox="-54 -52 108 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Half round coconut bowl -->
+              <path d="M-34 2 C-32 25 32 25 34 2 Z" fill="#5c3419" stroke="#92582c" stroke-width="1.5"/>
+              <ellipse cx="0" cy="2" rx="34" ry="8" fill="#3b1f0e" stroke="#b4743e" stroke-width="1.4"/>
+              <!-- Carved gold rim scallops -->
+              <path d="M-30 4 Q-22 11 -15 4 Q-7 11 0 4 Q7 11 15 4 Q22 11 30 4" stroke="#f5c65d" stroke-width="1.3" fill="none"/>
+              <!-- Purple Orchid -->
+              <g transform="translate(-16, 1)">
+                <circle cx="-4" cy="-3" r="4" fill="#c084fc"/>
+                <circle cx="4" cy="-3" r="4" fill="#c084fc"/>
+                <circle cx="0" cy="-7" r="4" fill="#d8b4fe"/>
+                <circle cx="0" cy="-2" r="2.5" fill="#fde047"/>
+              </g>
+              <!-- Wax pool & flame -->
+              <ellipse cx="6" cy="2" rx="13" ry="4.5" fill="#fef3c7"/>
+              <rect x="4" y="-12" width="4" height="14" rx="1.5" fill="#fde68a"/>
+              <path d="M6 -25 C9.8 -19 9.8 -14 6 -12 C2.2 -14 2.2 -19 6 -25 Z" fill="#fef08a"/>
+              <path d="M6 -21 C7.8 -18 7.8 -15 6 -13 C4.2 -15 4.2 -18 6 -21 Z" fill="#f97316"/>
+            </svg>`
+        },
+        {
+          id: 'heart_bread',
+          name: 'กระทงขนมปังเกลียวหัวใจคู่',
+          detail: 'ขนมปังอบสีทองถักเปียทรงหัวใจ แต่งกุหลาบแป้งและเทียนคู่รัก',
+          svg: `
+            <svg viewBox="-54 -52 108 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Braided heart bread base -->
+              <path d="M0 24 C-28 18 -42 6 -38 -4 C-34 -12 -14 -12 0 -3 C14 -12 34 -12 38 -4 C42 6 28 18 0 24 Z" fill="#c67d30" stroke="#f6c467" stroke-width="2"/>
+              <path d="M0 19 C-22 14 -32 5 -29 -2 C-26 -7 -11 -7 0 0 C11 -7 26 -7 29 -2 C32 5 22 14 0 19 Z" fill="#e59e46"/>
+              <!-- Braid marks -->
+              <circle cx="-25" cy="8" r="4" fill="#b46921"/>
+              <circle cx="-13" cy="14" r="4" fill="#b46921"/>
+              <circle cx="0" cy="17" r="4" fill="#b46921"/>
+              <circle cx="13" cy="14" r="4" fill="#b46921"/>
+              <circle cx="25" cy="8" r="4" fill="#b46921"/>
+              <!-- Pastry roses -->
+              <circle cx="-16" cy="3" r="4.5" fill="#f43f5e"/>
+              <circle cx="16" cy="3" r="4.5" fill="#f43f5e"/>
+              <circle cx="0" cy="7" r="4" fill="#fb7185"/>
+              <!-- Twin couple candles -->
+              <rect x="-8" y="-17" width="3.8" height="19" rx="1.4" fill="#fda4af"/>
+              <rect x="4.2" y="-17" width="3.8" height="19" rx="1.4" fill="#fda4af"/>
+              <path d="M-6.1 -28 C-3 -23 -3 -19 -6.1 -17 C-9.2 -19 -9.2 -23 -6.1 -28 Z" fill="#fef08a"/>
+              <path d="M6.1 -28 C9.2 -23 9.2 -19 6.1 -17 C3 -19 3 -23 6.1 -28 Z" fill="#fef08a"/>
+            </svg>`
+        },
+        {
+          id: 'ice_crystal',
+          name: 'กระทงน้ำแข็งแก้วบัวสวรรค์',
+          detail: 'น้ำแข็งแกะสลักเหลี่ยมคริสตัลใส ฝังกลีบอัญชันละลายคืนสู่สายน้ำ',
+          svg: `
+            <svg viewBox="-54 -52 108 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="0" cy="16" rx="40" ry="10" fill="rgba(125,211,252,0.35)"/>
+              <!-- Faceted crystal petals -->
+              <polygon points="-38,14 -28,-6 -14,14" fill="rgba(186,230,253,0.72)" stroke="#e0f2fe" stroke-width="1.2"/>
+              <polygon points="38,14 28,-6 14,14" fill="rgba(186,230,253,0.72)" stroke="#e0f2fe" stroke-width="1.2"/>
+              <polygon points="-24,15 -12,-14 0,15" fill="rgba(224,242,254,0.82)" stroke="#ffffff" stroke-width="1.2"/>
+              <polygon points="24,15 12,-14 0,15" fill="rgba(224,242,254,0.82)" stroke="#ffffff" stroke-width="1.2"/>
+              <polygon points="-12,16 0,-19 12,16" fill="rgba(240,249,255,0.9)" stroke="#ffffff" stroke-width="1.4"/>
+              <!-- Frozen blue pea blossoms inside -->
+              <circle cx="-12" cy="8" r="3.5" fill="#6366f1"/>
+              <circle cx="12" cy="8" r="3.5" fill="#6366f1"/>
+              <!-- Warm glowing core flame -->
+              <circle cx="0" cy="-4" r="9" fill="rgba(253,224,71,0.32)"/>
+              <path d="M0 -28 C4.2 -21 4.2 -15 0 -12 C-4.2 -15 -4.2 -21 0 -28 Z" fill="#fef9c3"/>
+              <path d="M0 -23 C2.2 -19 2.2 -15 0 -13 C-2.2 -15 -2.2 -19 0 -23 Z" fill="#fb923c"/>
+            </svg>`
+        },
+        {
+          id: 'royal_barge',
+          name: 'กระทงสำเภาดอกไม้ชาววัง',
+          detail: 'ทรงเรือสำเภาหัวท้ายงอน ร้อยอุบะมะลิสดและเครื่องทองบุษบก',
+          svg: `
+            <svg viewBox="-54 -52 108 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Curved Thai floral boat hull -->
+              <path d="M-46 -8 C-42 18 -22 22 0 22 C22 22 42 18 46 -12 C39 6 24 10 0 10 C-24 10 -39 6 -46 -8 Z" fill="#d97706" stroke="#fde68a" stroke-width="1.4"/>
+              <path d="M-34 11 C-18 16 18 16 34 11" stroke="#fef3c7" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <!-- Hanging jasmine garlands at prow & stern -->
+              <line x1="-44" y1="-5" x2="-44" y2="10" stroke="#fef9c3" stroke-width="1.6"/>
+              <circle cx="-44" cy="11" r="2.5" fill="#f43f5e"/>
+              <line x1="45" y1="-9" x2="45" y2="8" stroke="#fef9c3" stroke-width="1.6"/>
+              <circle cx="45" cy="9" r="2.5" fill="#f43f5e"/>
+              <!-- Central tiered floral spire (บุษบก) -->
+              <polygon points="-14,10 14,10 9,1 -9,1" fill="#10b981"/>
+              <polygon points="-10,1 10,1 5,-8 -5,-8" fill="#ec4899"/>
+              <polygon points="-5,-8 5,-8 0,-21" fill="#fbbf24"/>
+              <!-- Twin incense & glowing candle -->
+              <path d="M0 -34 C3.8 -28 3.8 -23 0 -21 C-3.8 -23 -3.8 -28 0 -34 Z" fill="#fef08a"/>
+            </svg>`
+        }
+      ];
+
+      /* =====================================================================
+         2. CONTINUOUS LOY KRATHONG MUSIC ENGINE (Web Audio API)
+         ===================================================================== */
+      const musicToggleBtn = document.getElementById('musicToggleBtn');
+      const musicDot = document.getElementById('musicDot');
+      const musicLabel = document.getElementById('musicLabel');
+
+      const NOTE_FREQ = {
+        C3: 130.81, D3: 146.83, E3: 164.81, F3: 174.61, G3: 196.00, A3: 220.00,
+        C4: 261.63, D4: 293.66, E4: 329.63, G4: 392.00, A4: 440.00,
+        C5: 523.25, D5: 587.33, E5: 659.25, G5: 783.99
+      };
+
+      // Traditional Loy Krathong melody (pentatonic Khim / music-box arrangement)
+      // Each entry: [melodyNote, durationInBeats, optionalBassNote]
+      const LOY_KRATHONG_SCORE = [
+        // วันเพ็ญเดือนสิบสอง
+        ['G4', 1.0, 'C3'], ['G4', 0.5, null], ['E4', 0.5, null], ['G4', 1.0, 'G3'], ['A4', 1.0, null], ['G4', 2.0, 'C3'],
+        // น้ำนองเต็มตลิ่ง
+        ['E4', 1.0, 'A3'], ['G4', 0.5, null], ['A4', 0.5, null], ['C5', 1.0, 'E3'], ['A4', 0.5, null], ['G4', 0.5, null], ['E4', 2.0, 'A3'],
+        // เราทั้งหลายชายหญิง
+        ['D4', 1.0, 'F3'], ['D4', 0.5, null], ['E4', 0.5, null], ['G4', 1.0, 'G3'], ['E4', 0.5, null], ['D4', 0.5, null], ['C4', 2.0, 'C3'],
+        // สนุกกันจริงวันลอยกระทง
+        ['D4', 1.0, 'F3'], ['E4', 0.5, null], ['G4', 0.5, null], ['A4', 1.0, 'D3'], ['G4', 1.0, null], ['D5', 1.0, 'G3'], ['C5', 0.5, null], ['A4', 0.5, null], ['G4', 2.0, 'G3'],
+        // ลอย ลอยกระทง ลอย ลอยกระทง
+        ['D5', 1.5, 'C3'], ['A4', 0.5, null], ['C5', 1.0, 'G3'], ['A4', 1.0, null],
+        ['G4', 1.5, 'C3'], ['E4', 0.5, null], ['G4', 1.0, 'G3'], ['E4', 1.0, null],
+        // ลอยกระทงกันแล้ว ขอเชิญน้องแก้วออกมารำวง
+        ['D4', 0.5, 'F3'], ['E4', 0.5, null], ['G4', 0.5, null], ['G4', 0.5, null], ['A4', 1.5, 'G3'], ['G4', 0.5, null],
+        ['A4', 0.5, 'A3'], ['C5', 0.5, null], ['D5', 0.5, null], ['C5', 0.5, null], ['A4', 0.5, 'E3'], ['G4', 0.5, null], ['E4', 1.0, null],
+        // รำวงวันลอยกระทง รำวงวันลอยกระทง
+        ['G4', 1.0, 'F3'], ['E4', 0.5, null], ['G4', 0.5, null], ['A4', 1.0, 'G3'], ['G4', 1.0, null],
+        ['G4', 1.0, 'F3'], ['E4', 0.5, null], ['D4', 0.5, null], ['C4', 2.0, 'C3'],
+        // บุญจะส่งให้เราสุขใจ บุญจะส่งให้เราสุขใจ
+        ['E4', 0.5, 'A3'], ['G4', 0.5, null], ['A4', 0.5, null], ['C5', 0.5, null], ['D5', 1.0, 'D3'], ['C5', 0.5, null], ['A4', 0.5, null], ['G4', 2.0, 'G3'],
+        ['A4', 0.5, 'F3'], ['C5', 0.5, null], ['D5', 1.0, null], ['E5', 0.5, 'G3'], ['D5', 0.5, null], ['C5', 3.0, 'C3'],
+        [null, 1.0, null]
+      ];
+
+      let audioCtx = null;
+      let masterGain = null;
+      let isMusicEnabled = true;
+      let scoreIndex = 0;
+      let nextNoteTime = 0;
+      let schedulerTimer = null;
+      const BEAT_SEC = 0.44; // Gentle, romantic tempo
+
+      function ensureAudioContext() {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContextClass) return null;
+          audioCtx = new AudioContextClass();
+          masterGain = audioCtx.createGain();
+          masterGain.gain.value = isMusicEnabled ? 0.24 : 0;
+
+          // Subtle warm echo for riverside night ambiance
+          const delay = audioCtx.createDelay();
+          delay.delayTime.value = 0.28;
+          const feedback = audioCtx.createGain();
+          feedback.gain.value = 0.22;
+          const wet = audioCtx.createGain();
+          wet.gain.value = 0.25;
+
+          masterGain.connect(audioCtx.destination);
+          masterGain.connect(delay);
+          delay.connect(feedback);
+          feedback.connect(delay);
+          delay.connect(wet);
+          wet.connect(audioCtx.destination);
+
+          nextNoteTime = audioCtx.currentTime + 0.08;
+        }
+        if (audioCtx.state === 'suspended' && isMusicEnabled) {
+          audioCtx.resume().catch(() => {});
+        }
+        return audioCtx;
+      }
+
+      function playKhimNote(freq, startTime, durationSec, volume, isBass) {
+        if (!audioCtx || !masterGain || !freq) return;
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
+        const noteGain = audioCtx.createGain();
+
+        osc1.type = isBass ? 'sine' : 'triangle';
+        osc2.type = 'sine';
+        osc1.frequency.setValueAtTime(freq, startTime);
+        osc2.frequency.setValueAtTime(isBass ? freq * 2 : freq * 2, startTime);
+
+        const mix2 = audioCtx.createGain();
+        mix2.gain.value = isBass ? 0.12 : 0.22;
+
+        const release = Math.max(durationSec * 1.35, 0.45);
+        noteGain.gain.setValueAtTime(0.0001, startTime);
+        noteGain.gain.linearRampToValueAtTime(volume, startTime + 0.018);
+        noteGain.gain.exponentialRampToValueAtTime(0.0001, startTime + release);
+
+        osc1.connect(noteGain);
+        osc2.connect(mix2);
+        mix2.connect(noteGain);
+        noteGain.connect(masterGain);
+
+        osc1.start(startTime);
+        osc2.start(startTime);
+        osc1.stop(startTime + release + 0.04);
+        osc2.stop(startTime + release + 0.04);
+      }
+
+      function playGentleEffect(type) {
+        if (!isMusicEnabled) return;
+        const ctxAudio = ensureAudioContext();
+        if (!ctxAudio || ctxAudio.state !== 'running') return;
+        const now = ctxAudio.currentTime;
+        if (type === 'water') {
+          playKhimNote(NOTE_FREQ.E5, now, 0.18, 0.12, false);
+          playKhimNote(NOTE_FREQ.G5, now + 0.07, 0.22, 0.10, false);
+        } else if (type === 'lantern') {
+          playKhimNote(NOTE_FREQ.C5, now, 0.25, 0.11, false);
+          playKhimNote(NOTE_FREQ.E5, now + 0.09, 0.35, 0.11, false);
+        } else if (type === 'release') {
+          [NOTE_FREQ.C5, NOTE_FREQ.E5, NOTE_FREQ.G5].forEach((f, idx) => {
+            playKhimNote(f, now + idx * 0.09, 0.45, 0.14, false);
+          });
+        }
+      }
+
+      function scheduleMusicLoop() {
+        if (!isMusicEnabled) return;
+        const ctxAudio = ensureAudioContext();
+        if (!ctxAudio || ctxAudio.state !== 'running') return;
+
+        if (nextNoteTime < ctxAudio.currentTime) {
+          nextNoteTime = ctxAudio.currentTime + 0.05;
+        }
+
+        while (nextNoteTime < ctxAudio.currentTime + 0.35) {
+          const [melodyKey, beats, bassKey] = LOY_KRATHONG_SCORE[scoreIndex];
+          const dur = beats * BEAT_SEC;
+          if (melodyKey && NOTE_FREQ[melodyKey]) {
+            playKhimNote(NOTE_FREQ[melodyKey], nextNoteTime, dur, 0.28, false);
+          }
+          if (bassKey && NOTE_FREQ[bassKey]) {
+            playKhimNote(NOTE_FREQ[bassKey], nextNoteTime, dur * 1.6, 0.16, true);
+          }
+          nextNoteTime += dur;
+          scoreIndex = (scoreIndex + 1) % LOY_KRATHONG_SCORE.length;
+        }
+      }
+
+      function updateMusicButtonUI() {
+        musicToggleBtn.setAttribute('aria-pressed', String(isMusicEnabled));
+        musicLabel.textContent = isMusicEnabled ? 'เสียงเพลง: เปิด' : 'เสียงเพลง: ปิด';
+        if (isMusicEnabled) {
+          musicDot.classList.remove('is-muted');
+        } else {
+          musicDot.classList.add('is-muted');
+        }
+      }
+
+      function startContinuousMusic() {
+        ensureAudioContext();
+        if (!schedulerTimer) {
+          schedulerTimer = setInterval(scheduleMusicLoop, 120);
+        }
+        scheduleMusicLoop();
+      }
+
+      musicToggleBtn.addEventListener('click', () => {
+        isMusicEnabled = !isMusicEnabled;
+        ensureAudioContext();
+        if (masterGain && audioCtx) {
+          masterGain.gain.setTargetAtTime(isMusicEnabled ? 0.24 : 0, audioCtx.currentTime, 0.06);
+        }
+        if (isMusicEnabled) {
+          startContinuousMusic();
+        }
+        updateMusicButtonUI();
+      });
+
+      // Auto-start immediately and unlock seamlessly on first user interaction if browser suspended autoplay
+      startContinuousMusic();
+      ['pointerdown', 'touchstart', 'keydown'].forEach((evtName) => {
+        window.addEventListener(evtName, () => {
+          if (isMusicEnabled) {
+            const c = ensureAudioContext();
+            if (c && c.state === 'suspended') {
+              c.resume().then(() => scheduleMusicLoop()).catch(() => {});
+            } else {
+              scheduleMusicLoop();
+            }
+          }
+        }, { passive: true });
+      });
+
+      /* =====================================================================
+         2B. UI STATE & KRATHONG SELECTOR RENDERING
+         ===================================================================== */
+      let selectedModelId = KRATHONG_MODELS[0].id;
+      const krathongGrid = document.getElementById('krathongGrid');
+      const stageLayout = document.getElementById('stageLayout');
+      const composerDrawer = document.getElementById('composerDrawer');
+      const toggleComposerBtn = document.getElementById('toggleComposerBtn');
+      const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+      const floatForm = document.getElementById('floatForm');
+      const loverInput = document.getElementById('loverName');
+      const wishInput = document.getElementById('wishInput');
+      const formError = document.getElementById('formError');
+
+      function renderKrathongCards() {
+        krathongGrid.innerHTML = '';
+        KRATHONG_MODELS.forEach((model) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'krathong-card';
+          btn.setAttribute('aria-pressed', String(model.id === selectedModelId));
+          btn.innerHTML = `
+            <div class="krathong-thumb" aria-hidden="true">${model.svg}</div>
+            <span class="krathong-name">${model.name}</span>
+            <span class="krathong-detail">${model.detail}</span>
+          `;
+          btn.addEventListener('click', () => {
+            selectedModelId = model.id;
+            Array.from(krathongGrid.children).forEach((child, idx) => {
+              child.setAttribute('aria-pressed', String(KRATHONG_MODELS[idx].id === selectedModelId));
+            });
+          });
+          krathongGrid.appendChild(btn);
+        });
+      }
+      renderKrathongCards();
+
+      function setDrawerOpen(open) {
+        if (open) {
+          composerDrawer.classList.remove('is-collapsed');
+          stageLayout.classList.remove('panel-hidden');
+          toggleComposerBtn.textContent = 'ซ่อนแผงจัดกระทง';
+          toggleComposerBtn.setAttribute('aria-expanded', 'true');
+        } else {
+          composerDrawer.classList.add('is-collapsed');
+          stageLayout.classList.add('panel-hidden');
+          toggleComposerBtn.textContent = 'จัดกระทงให้คนรัก';
+          toggleComposerBtn.setAttribute('aria-expanded', 'false');
+        }
+        requestAnimationFrame(resizeCanvas);
+      }
+
+      toggleComposerBtn.addEventListener('click', () => {
+        const isCurrentlyOpen = !composerDrawer.classList.contains('is-collapsed');
+        setDrawerOpen(!isCurrentlyOpen);
+      });
+
+      closeDrawerBtn.addEventListener('click', () => {
+        setDrawerOpen(false);
+      });
+
+      /* =====================================================================
+         3. MODAL VIEWER FOR CLICKED KRATHONG ON THE RIVER
+         ===================================================================== */
+      const wishModal = document.getElementById('wishModal');
+      const closeModalBtn = document.getElementById('closeModalBtn');
+      const modalKrathongSvg = document.getElementById('modalKrathongSvg');
+      const modalBadge = document.getElementById('modalBadge');
+      const modalCoupleTitle = document.getElementById('modalCoupleTitle');
+      const modalModelName = document.getElementById('modalModelName');
+      const modalWishText = document.getElementById('modalWishText');
+
+      function openWishModal(k) {
+        const model = KRATHONG_MODELS.find((m) => m.id === k.modelId) || KRATHONG_MODELS[0];
+        modalKrathongSvg.innerHTML = model.svg;
+        if (k.isPlayerCouple) {
+          modalBadge.textContent = 'กระทงคู่รักของคุณ';
+          modalBadge.className = 'wish-badge';
+        } else {
+          modalBadge.textContent = 'ผู้ร่วมลอยกระทงริมน้ำ';
+          modalBadge.className = 'wish-badge ambient';
+        }
+        modalCoupleTitle.textContent = k.title;
+        modalModelName.textContent = model.name;
+        modalWishText.textContent = k.wish;
+        wishModal.hidden = false;
+        closeModalBtn.focus();
+      }
+
+      function closeWishModal() {
+        wishModal.hidden = true;
+      }
+
+      closeModalBtn.addEventListener('click', closeWishModal);
+      wishModal.addEventListener('click', (e) => {
+        if (e.target === wishModal) closeWishModal();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !wishModal.hidden) closeWishModal();
+      });
+
+      /* =====================================================================
+         4. SCENIC INTERACTIVE LOY KRATHONG RIVER ENGINE (HTML5 Canvas)
+            - Full moon, starry sky, floating sky lanterns (โคมลอย), distant temple
+            - Wooden pier & steps with OTHER CHARACTERS kneeling & floating krathongs
+            - Main couple pier where YOUR romantic couple kneels & releases krathongs
+            - ROWBOAT BOATERS in the river paddling along & following krathongs
+            - 6 bespoke vector-drawn krathong designs floating with reflections
+         ===================================================================== */
+      const canvas = document.getElementById('riverCanvas');
+      const ctx = canvas.getContext('2d');
+      let width = 800;
+      let height = 600;
+      let dpr = 1;
+      let riverTopY = 230;
+      let pierY = 275;
+
+      const stars = [];
+      const skyLanterns = [];
+      const fireflies = [];
+      const ripples = [];
+      const fishes = [];
+      const waterBaits = [];
+      const sparkles = [];
+      const krathongs = [];
+      const boaters = [];
+      const shoreCharacters = [];
+
+      // Romantic Couple Avatar State on Central Pier
+      const couplePierState = {
+        kneelTimer: 0, // >0 when actively releasing a krathong
+        pendingSpawn: null
+      };
+
+      // Ambient NPC character presets along the wooden sala & steps
+      const AMBIENT_WISHES = [
+        { title: 'ผู้ร่วมงานริมท่าน้ำเหนือ', wish: 'ขอขมาพระแม่คงคา ขอให้ชีวิตร่มเย็นเป็นสุขตลอดปี' },
+        { title: 'คู่รักหนุ่มสาวชุดไทย', wish: 'ขอให้เราเคียงข้างกันทุกคืนวันเพ็ญ ความรักราบรื่นสดใส' },
+        { title: 'ครอบครัวบ้านริมคลอง', wish: 'ขอให้ครอบครัวอบอุ่น สุขภาพแข็งแรง ปราศจากทุกข์โศก' },
+        { title: 'กัลยาณมิตรริมศาลา', wish: 'ลอยความทุกข์ไปกับสายน้ำ เปิดรับสิ่งงดงามเข้ามาในชีวิต' }
+      ];
+
+      function initSceneEntities() {
+        stars.length = 0;
+        for (let i = 0; i < 75; i++) {
+          stars.push({
+            rx: Math.random(),
+            ry: Math.random() * 0.34,
+            r: 0.6 + Math.random() * 1.4,
+            phase: Math.random() * Math.PI * 2
+          });
+        }
+
+        skyLanterns.length = 0;
+        for (let i = 0; i < 14; i++) {
+          skyLanterns.push({
+            rx: Math.random(),
+            ry: 0.04 + Math.random() * 0.30,
+            size: 6 + Math.random() * 8,
+            vx: 0.004 + Math.random() * 0.006,
+            vy: -0.003 - Math.random() * 0.004,
+            sway: Math.random() * Math.PI * 2
+          });
+        }
+
+        fireflies.length = 0;
+        for (let i = 0; i < 24; i++) {
+          fireflies.push({
+            rx: Math.random(),
+            ry: 0.30 + Math.random() * 0.65,
+            phase: Math.random() * Math.PI * 2,
+            speed: 0.4 + Math.random() * 0.7
+          });
+        }
+
+        // Other characters along the pier/bank who periodically kneel & float krathongs
+        shoreCharacters.length = 0;
+        shoreCharacters.push(
+          {
+            id: 'npc_left',
+            rx: 0.16,
+            sashColor: '#38bdf8',
+            skirtColor: '#1e40af',
+            partnerSash: '#f472b6',
+            isPair: true,
+            cooldown: 140,
+            kneelTimer: 0,
+            nextModelIdx: 0
+          },
+          {
+            id: 'npc_midleft',
+            rx: 0.33,
+            sashColor: '#34d399',
+            skirtColor: '#065f46',
+            isPair: false,
+            cooldown: 320,
+            kneelTimer: 0,
+            nextModelIdx: 2
+          },
+          {
+            id: 'npc_right',
+            rx: 0.80,
+            sashColor: '#c084fc',
+            skirtColor: '#5b21b6',
+            partnerSash: '#fbbf24',
+            isPair: true,
+            cooldown: 240,
+            kneelTimer: 0,
+            nextModelIdx: 5
+          }
+        );
+
+        // Initial ambient krathongs already drifting on the river (distinct designs)
+        krathongs.length = 0;
+        const starterConfigs = [
+          { rx: 0.24, lane: 0.28, modelId: 'lotus_leaf', idx: 0 },
+          { rx: 0.48, lane: 0.56, modelId: 'coconut_shell', idx: 1 },
+          { rx: 0.68, lane: 0.38, modelId: 'royal_barge', idx: 2 },
+          { rx: 0.84, lane: 0.70, modelId: 'ice_crystal', idx: 3 }
+        ];
+        starterConfigs.forEach((cfg) => {
+          const info = AMBIENT_WISHES[cfg.idx % AMBIENT_WISHES.length];
+          krathongs.push(createKrathongObject({
+            x: cfg.rx * width,
+            lane: cfg.lane,
+            modelId: cfg.modelId,
+            title: info.title,
+            wish: info.wish,
+            isPlayerCouple: false
+          }));
+        });
+
+        // Boaters rowing wooden sampans in the water following krathongs
+        boaters.length = 0;
+        boaters.push(
+          {
+            x: width * 0.20,
+            y: riverTopY + (height - riverTopY) * 0.48,
+            vx: 0.45,
+            vy: 0,
+            oarPhase: 0,
+            hatColor: '#d97706',
+            shirtColor: '#1e3a8a',
+            lanternColor: '#fde047',
+            preferCouple: true,
+            targetKrathong: null
+          },
+          {
+            x: width * 0.62,
+            y: riverTopY + (height - riverTopY) * 0.78,
+            vx: 0.38,
+            vy: 0,
+            oarPhase: 2.1,
+            hatColor: '#b45309',
+            shirtColor: '#065f46',
+            lanternColor: '#fed7aa',
+            preferCouple: false,
+            targetKrathong: null
+          }
+        );
+
+        // Graceful river fish (ปลาตะเพียนทอง / ปลาในสายน้ำ)
+        fishes.length = 0;
+        const fishPalettes = [
+          { body: 'rgba(251, 146, 60, 0.78)', fin: 'rgba(253, 224, 71, 0.65)' },
+          { body: 'rgba(250, 204, 21, 0.75)', fin: 'rgba(254, 240, 138, 0.65)' },
+          { body: 'rgba(244, 114, 182, 0.70)', fin: 'rgba(251, 207, 232, 0.60)' },
+          { body: 'rgba(148, 163, 184, 0.68)', fin: 'rgba(226, 232, 240, 0.58)' }
+        ];
+        for (let i = 0; i < 14; i++) {
+          const pal = fishPalettes[i % fishPalettes.length];
+          const dir = i % 2 === 0 ? 1 : -1;
+          fishes.push({
+            x: Math.random() * width,
+            y: pierY + 26 + Math.random() * Math.max(80, height - pierY - 52),
+            vx: dir * (0.45 + Math.random() * 0.55),
+            vy: (Math.random() - 0.5) * 0.25,
+            size: 8.5 + Math.random() * 5.5,
+            tailPhase: Math.random() * Math.PI * 2,
+            bodyColor: pal.body,
+            finColor: pal.fin,
+            nibbleCooldown: Math.floor(Math.random() * 120)
+          });
+        }
+      }
+
+      function createKrathongObject({ x, lane, modelId, title, wish, isPlayerCouple }) {
+        return {
+          x,
+          lane, // 0.14 (near pier) to 0.88 (foreground river)
+          y: riverTopY + (height - riverTopY) * lane,
+          vx: 0.28 + lane * 0.32,
+          bobPhase: Math.random() * Math.PI * 2,
+          modelId,
+          title,
+          wish,
+          isPlayerCouple,
+          glowPulse: Math.random() * Math.PI * 2,
+          spawnRippleTimer: 0
+        };
+      }
+
+      function resizeCanvas() {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        width = Math.max(320, rect.width);
+        height = Math.max(500, rect.height);
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        riverTopY = height * 0.39;
+        pierY = height * 0.44;
+      }
+
+      resizeCanvas();
+      initSceneEntities();
+      window.addEventListener('resize', resizeCanvas);
+
+      /* =====================================================================
+         5. DRAWING ROUTINES
+         ===================================================================== */
+      function drawSkyAndMoon(t) {
+        // Sky gradient
+        const skyGrad = ctx.createLinearGradient(0, 0, 0, riverTopY);
+        skyGrad.addColorStop(0, '#040814');
+        skyGrad.addColorStop(0.55, '#0b1938');
+        skyGrad.addColorStop(1, '#1a2d57');
+        ctx.fillStyle = skyGrad;
+        ctx.fillRect(0, 0, width, riverTopY + 4);
+
+        // Twinkling stars
+        stars.forEach((s) => {
+          const alpha = 0.35 + 0.55 * Math.sin(t * 0.002 + s.phase);
+          ctx.fillStyle = `rgba(255, 248, 225, ${alpha.toFixed(2)})`;
+          ctx.beginPath();
+          ctx.arc(s.rx * width, s.ry * height, s.r, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        // Full Moon (จันทร์เพ็ญ)
+        const moonX = width * 0.72;
+        const moonY = height * 0.14;
+        const moonR = Math.min(width, height) * 0.072;
+
+        const halo = ctx.createRadialGradient(moonX, moonY, moonR * 0.6, moonX, moonY, moonR * 3.6);
+        halo.addColorStop(0, 'rgba(255, 236, 170, 0.42)');
+        halo.addColorStop(0.45, 'rgba(245, 198, 93, 0.12)');
+        halo.addColorStop(1, 'rgba(245, 198, 93, 0)');
+        ctx.fillStyle = halo;
+        ctx.beginPath();
+        ctx.arc(moonX, moonY, moonR * 3.6, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#fff8dc';
+        ctx.beginPath();
+        ctx.arc(moonX, moonY, moonR, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Floating Sky Lanterns (โคมลอย)
+        skyLanterns.forEach((l) => {
+          l.rx += (l.vx * 0.08) / 60;
+          l.ry += (l.vy * 0.08) / 60;
+          if (l.ry < -0.05 || l.rx > 1.05) {
+            l.rx = Math.random() * 0.85;
+            l.ry = 0.35;
+          }
+          const lx = l.rx * width + Math.sin(t * 0.0015 + l.sway) * 6;
+          const ly = l.ry * height;
+
+          const glow = ctx.createRadialGradient(lx, ly, 1, lx, ly, l.size * 2.4);
+          glow.addColorStop(0, 'rgba(255, 196, 92, 0.65)');
+          glow.addColorStop(1, 'rgba(255, 150, 50, 0)');
+          ctx.fillStyle = glow;
+          ctx.beginPath();
+          ctx.arc(lx, ly, l.size * 2.4, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = '#fb923c';
+          ctx.beginPath();
+          ctx.roundRect(lx - l.size * 0.42, ly - l.size * 0.6, l.size * 0.84, l.size * 1.15, 3);
+          ctx.fill();
+
+          ctx.fillStyle = '#fef08a';
+          ctx.beginPath();
+          ctx.arc(lx, ly + l.size * 0.35, l.size * 0.24, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        // Distant Thai Temple & Chedi Silhouette on Horizon
+        ctx.fillStyle = '#071126';
+        ctx.beginPath();
+        ctx.moveTo(0, riverTopY);
+        ctx.lineTo(0, riverTopY - 18);
+        ctx.lineTo(width * 0.12, riverTopY - 24);
+        // Chedi spire 1
+        ctx.lineTo(width * 0.16, riverTopY - 30);
+        ctx.lineTo(width * 0.175, riverTopY - 72);
+        ctx.lineTo(width * 0.19, riverTopY - 30);
+        // Temple roof (โบสถ์)
+        ctx.lineTo(width * 0.22, riverTopY - 28);
+        ctx.lineTo(width * 0.25, riverTopY - 52);
+        ctx.lineTo(width * 0.31, riverTopY - 52);
+        ctx.lineTo(width * 0.34, riverTopY - 26);
+        // Gentle hills & trees
+        ctx.quadraticCurveTo(width * 0.52, riverTopY - 36, width * 0.70, riverTopY - 18);
+        ctx.quadraticCurveTo(width * 0.86, riverTopY - 32, width, riverTopY - 16);
+        ctx.lineTo(width, riverTopY);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      function drawRiverSurface(t) {
+        const riverGrad = ctx.createLinearGradient(0, riverTopY, 0, height);
+        riverGrad.addColorStop(0, '#0c1d42');
+        riverGrad.addColorStop(0.35, '#091836');
+        riverGrad.addColorStop(1, '#050d21');
+        ctx.fillStyle = riverGrad;
+        ctx.fillRect(0, riverTopY, width, height - riverTopY);
+
+        // Shimmering Moon Reflection Path on Water
+        const moonX = width * 0.72;
+        for (let i = 0; i < 24; i++) {
+          const progress = i / 24;
+          const y = riverTopY + 14 + progress * (height - riverTopY - 30);
+          const waveOffset = Math.sin(t * 0.0024 + i * 0.9) * (6 + progress * 18);
+          const barW = (18 + progress * 65) * (0.75 + 0.25 * Math.sin(t * 0.003 + i));
+          ctx.fillStyle = `rgba(255, 232, 163, ${(0.22 - progress * 0.15).toFixed(3)})`;
+          ctx.beginPath();
+          ctx.roundRect(moonX + waveOffset - barW / 2, y, barW, 2.5 + progress * 2, 2);
+          ctx.fill();
+        }
+
+        // Underwater swimming fish (ปลาแหวกว่ายใต้ผิวน้ำ)
+        fishes.forEach((f) => {
+          const angle = Math.atan2(f.vy * 0.55, f.vx);
+          const swish = Math.sin(f.tailPhase) * 0.38;
+          const depthScale = 0.72 + ((f.y - riverTopY) / Math.max(1, height - riverTopY)) * 0.42;
+          const sz = f.size * depthScale;
+
+          ctx.save();
+          ctx.translate(f.x, f.y);
+          ctx.rotate(angle);
+
+          // Soft underwater glow halo
+          ctx.fillStyle = 'rgba(253, 224, 71, 0.08)';
+          ctx.beginPath();
+          ctx.ellipse(0, 0, sz * 1.4, sz * 0.65, 0, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Pectoral side fins
+          ctx.fillStyle = f.finColor;
+          ctx.beginPath();
+          ctx.ellipse(sz * 0.1, -sz * 0.42, sz * 0.36, sz * 0.16, -0.5 + swish * 0.3, 0, Math.PI * 2);
+          ctx.ellipse(sz * 0.1, sz * 0.42, sz * 0.36, sz * 0.16, 0.5 + swish * 0.3, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Undulating forked tail fin
+          ctx.fillStyle = f.finColor;
+          ctx.beginPath();
+          ctx.moveTo(-sz * 0.75, 0);
+          ctx.lineTo(-sz * 1.45, -sz * 0.48 + swish * sz * 0.65);
+          ctx.quadraticCurveTo(-sz * 1.15, swish * sz * 0.3, -sz * 1.45, sz * 0.48 + swish * sz * 0.65);
+          ctx.closePath();
+          ctx.fill();
+
+          // Streamlined fish body
+          ctx.fillStyle = f.bodyColor;
+          ctx.beginPath();
+          ctx.moveTo(sz * 0.95, 0);
+          ctx.quadraticCurveTo(sz * 0.25, -sz * 0.46, -sz * 0.82, -sz * 0.12);
+          ctx.lineTo(-sz * 0.82, sz * 0.12);
+          ctx.quadraticCurveTo(sz * 0.25, sz * 0.46, sz * 0.95, 0);
+          ctx.closePath();
+          ctx.fill();
+
+          // Subtle dorsal shimmer
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.28)';
+          ctx.lineWidth = 0.9;
+          ctx.beginPath();
+          ctx.moveTo(sz * 0.45, 0);
+          ctx.lineTo(-sz * 0.35, swish * sz * 0.12);
+          ctx.stroke();
+
+          ctx.restore();
+        });
+
+        // Floating fish-treat / light droplets from user water taps
+        for (let i = waterBaits.length - 1; i >= 0; i--) {
+          const wb = waterBaits[i];
+          wb.life--;
+          if (wb.life <= 0) {
+            waterBaits.splice(i, 1);
+            continue;
+          }
+          const alpha = Math.min(0.85, wb.life / 90);
+          ctx.fillStyle = `rgba(254, 240, 138, ${alpha.toFixed(2)})`;
+          ctx.beginPath();
+          ctx.arc(wb.x, wb.y, 2.6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Expanding water ripples
+        for (let i = ripples.length - 1; i >= 0; i--) {
+          const rp = ripples[i];
+          rp.r += 0.32;
+          rp.alpha -= 0.0045;
+          if (rp.alpha <= 0) {
+            ripples.splice(i, 1);
+            continue;
+          }
+          ctx.strokeStyle = `rgba(245, 214, 138, ${rp.alpha.toFixed(3)})`;
+          ctx.lineWidth = 1.1;
+          ctx.beginPath();
+          ctx.ellipse(rp.x, rp.y, rp.r, rp.r * 0.3, 0, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      }
+
+      function drawPierAndCharacters(t) {
+        // Wooden promenade & Thai riverside deck along the upper bank
+        const deckTop = riverTopY - 6;
+        const deckBottom = pierY;
+
+        // Pier pilings in water
+        ctx.fillStyle = '#1d120c';
+        const postCount = Math.max(6, Math.floor(width / 130));
+        for (let i = 0; i <= postCount; i++) {
+          const px = (i / postCount) * width;
+          ctx.fillRect(px - 5, deckBottom - 4, 10, 26);
+        }
+
+        // Main teakwood walkway
+        const woodGrad = ctx.createLinearGradient(0, deckTop, 0, deckBottom);
+        woodGrad.addColorStop(0, '#3b2314');
+        woodGrad.addColorStop(1, '#26150b');
+        ctx.fillStyle = woodGrad;
+        ctx.fillRect(0, deckTop, width, deckBottom - deckTop);
+
+        ctx.strokeStyle = 'rgba(245, 198, 93, 0.28)';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(0, deckBottom);
+        ctx.lineTo(width, deckBottom);
+        ctx.stroke();
+
+        // Festive Lanna Lantern String (ราวโคมไฟประดับงานลอยกระทง)
+        const poleCount = Math.max(4, Math.floor(width / 220));
+        const poleTopY = deckTop - 58;
+        for (let i = 0; i <= poleCount; i++) {
+          const x1 = (i / poleCount) * width;
+          ctx.fillStyle = '#4a2c18';
+          ctx.fillRect(x1 - 2.5, poleTopY, 5, 62);
+
+          if (i < poleCount) {
+            const x2 = ((i + 1) / poleCount) * width;
+            const midX = (x1 + x2) / 2;
+            const sagY = poleTopY + 20;
+            ctx.strokeStyle = 'rgba(255, 224, 138, 0.35)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(x1, poleTopY + 4);
+            ctx.quadraticCurveTo(midX, sagY, x2, poleTopY + 4);
+            ctx.stroke();
+
+            // Hanging colorful festive Thai lanterns along string
+            for (let k = 1; k <= 3; k++) {
+              const u = k / 4;
+              const lx = (1 - u) * (1 - u) * x1 + 2 * (1 - u) * u * midX + u * u * x2;
+              const ly = (1 - u) * (1 - u) * (poleTopY + 4) + 2 * (1 - u) * u * sagY + u * u * (poleTopY + 4);
+              const sway = Math.sin(t * 0.003 + i + k) * 2;
+              const colors = ['#f59e0b', '#ec4899', '#eab308'];
+              const c = colors[(i + k) % colors.length];
+
+              ctx.fillStyle = 'rgba(253, 224, 71, 0.22)';
+              ctx.beginPath();
+              ctx.arc(lx + sway, ly + 8, 12, 0, Math.PI * 2);
+              ctx.fill();
+
+              ctx.fillStyle = c;
+              ctx.beginPath();
+              ctx.roundRect(lx + sway - 4.5, ly + 2, 9, 12, 3);
+              ctx.fill();
+            }
+          }
+        }
+
+        // Draw OTHER CHARACTERS (NPCs) standing/kneeling at wooden water steps
+        shoreCharacters.forEach((npc) => {
+          const cx = npc.rx * width;
+          // Water step platform
+          ctx.fillStyle = '#2e1a0f';
+          ctx.fillRect(cx - 28, deckBottom - 2, 56, 12);
+          ctx.strokeStyle = 'rgba(245, 198, 93, 0.22)';
+          ctx.strokeRect(cx - 28, deckBottom - 2, 56, 12);
+
+          const isKneeling = npc.kneelTimer > 0;
+          if (npc.isPair) {
+            drawThaiPerson(cx - 11, deckBottom + 4, {
+              sashColor: npc.sashColor,
+              lowerColor: npc.skirtColor,
+              kneeling: isKneeling,
+              holdingKrathong: isKneeling && npc.kneelTimer > 35,
+              facingRight: true
+            });
+            drawThaiPerson(cx + 11, deckBottom + 4, {
+              sashColor: npc.partnerSash,
+              lowerColor: '#312e81',
+              kneeling: isKneeling,
+              holdingKrathong: false,
+              facingRight: false
+            });
+          } else {
+            drawThaiPerson(cx, deckBottom + 4, {
+              sashColor: npc.sashColor,
+              lowerColor: npc.skirtColor,
+              kneeling: isKneeling,
+              holdingKrathong: isKneeling && npc.kneelTimer > 35,
+              facingRight: true
+            });
+          }
+        });
+
+        // Central Romantic Couple Pier (ท่าน้ำคู่รักหลัก)
+        const centerPierX = width * 0.54;
+        ctx.fillStyle = '#3d2213';
+        ctx.beginPath();
+        ctx.roundRect(centerPierX - 46, deckBottom - 4, 92, 20, 4);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255, 224, 138, 0.5)';
+        ctx.lineWidth = 1.4;
+        ctx.stroke();
+
+        // Warm lotus lantern pillars flanking the couple pier
+        [-40, 40].forEach((dx) => {
+          ctx.fillStyle = '#4a2c18';
+          ctx.fillRect(centerPierX + dx - 2, deckBottom - 26, 4, 28);
+          ctx.fillStyle = 'rgba(254, 240, 138, 0.3)';
+          ctx.beginPath();
+          ctx.arc(centerPierX + dx, deckBottom - 28, 10, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#fde047';
+          ctx.beginPath();
+          ctx.arc(centerPierX + dx, deckBottom - 28, 4, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        const coupleKneeling = couplePierState.kneelTimer > 0;
+        drawThaiPerson(centerPierX - 13, deckBottom + 10, {
+          sashColor: '#fde68a',
+          lowerColor: '#7c2d12',
+          kneeling: coupleKneeling,
+          holdingKrathong: coupleKneeling && couplePierState.kneelTimer > 40,
+          facingRight: true
+        });
+        drawThaiPerson(centerPierX + 13, deckBottom + 10, {
+          sashColor: '#f472b6',
+          lowerColor: '#831843',
+          kneeling: coupleKneeling,
+          holdingKrathong: false,
+          facingRight: false
+        });
+
+        // Subtle heart glow above couple when releasing a krathong
+        if (coupleKneeling) {
+          ctx.save();
+          ctx.translate(centerPierX, deckBottom - 28 - (90 - couplePierState.kneelTimer) * 0.18);
+          ctx.fillStyle = 'rgba(244, 143, 177, 0.88)';
+          ctx.beginPath();
+          ctx.moveTo(0, 4);
+          ctx.bezierCurveTo(-8, -4, -12, -10, -5, -13);
+          ctx.bezierCurveTo(-1, -15, 0, -10, 0, -8);
+          ctx.bezierCurveTo(0, -10, 1, -15, 5, -13);
+          ctx.bezierCurveTo(12, -10, 8, -4, 0, 4);
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      function drawThaiPerson(x, footY, opts) {
+        ctx.save();
+        ctx.translate(x, footY);
+        const kneelDrop = opts.kneeling ? 7 : 0;
+
+        // Lower garment (โจงกระเบน / ผ้าซิ่น)
+        ctx.fillStyle = opts.lowerColor;
+        if (opts.kneeling) {
+          ctx.beginPath();
+          ctx.roundRect(-7, -11, 14, 11, 4);
+          ctx.fill();
+        } else {
+          ctx.beginPath();
+          ctx.roundRect(-5.5, -18, 11, 18, 3);
+          ctx.fill();
+        }
+
+        // Torso & Thai Sabai (สไบเฉียง)
+        ctx.fillStyle = '#fde6c4';
+        ctx.beginPath();
+        ctx.roundRect(-5.5, -31 + kneelDrop, 11, 14, 4);
+        ctx.fill();
+
+        ctx.fillStyle = opts.sashColor;
+        ctx.beginPath();
+        ctx.moveTo(-6, -31 + kneelDrop);
+        ctx.lineTo(6, -24 + kneelDrop);
+        ctx.lineTo(6, -17 + kneelDrop);
+        ctx.lineTo(-6, -17 + kneelDrop);
+        ctx.closePath();
+        ctx.fill();
+
+        // Head & Hair
+        ctx.fillStyle = '#fcd9b6';
+        ctx.beginPath();
+        ctx.arc(0, -37 + kneelDrop, 5.2, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#1c1917';
+        ctx.beginPath();
+        ctx.arc(0, -38.5 + kneelDrop, 5.4, Math.PI, Math.PI * 2);
+        ctx.fill();
+
+        // Extending arms holding miniature glowing krathong toward water
+        if (opts.holdingKrathong) {
+          const dir = opts.facingRight ? 1 : -1;
+          ctx.strokeStyle = '#fcd9b6';
+          ctx.lineWidth = 2.6;
+          ctx.beginPath();
+          ctx.moveTo(dir * 3, -25 + kneelDrop);
+          ctx.lineTo(dir * 12, -14 + kneelDrop);
+          ctx.stroke();
+
+          ctx.fillStyle = '#fde047';
+          ctx.beginPath();
+          ctx.arc(dir * 13, -15 + kneelDrop, 4.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      /* Draw Rowboat + Boater paddling alongside krathongs */
+      function drawRowboat(b, t) {
+        const scale = 0.72 + ((b.y - riverTopY) / (height - riverTopY)) * 0.45;
+        const bob = Math.sin(t * 0.003 + b.oarPhase) * 2;
+        ctx.save();
+        ctx.translate(b.x, b.y + bob);
+        ctx.scale(scale, scale);
+
+        const dir = b.vx >= 0 ? 1 : -1;
+        ctx.scale(dir, 1);
+
+        // Soft water wake under sampan
+        ctx.strokeStyle = 'rgba(203, 213, 225, 0.22)';
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.ellipse(0, 12, 54, 8, 0, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Warm bow lantern reflection on water
+        const refl = ctx.createRadialGradient(48, 16, 2, 48, 16, 24);
+        refl.addColorStop(0, 'rgba(253, 224, 71, 0.35)');
+        refl.addColorStop(1, 'rgba(253, 224, 71, 0)');
+        ctx.fillStyle = refl;
+        ctx.beginPath();
+        ctx.arc(48, 16, 24, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Wooden Thai Sampan Hull (เรือพายไม้)
+        ctx.fillStyle = '#45230f';
+        ctx.beginPath();
+        ctx.moveTo(-54, -4);
+        ctx.quadraticCurveTo(-36, 14, 0, 14);
+        ctx.quadraticCurveTo(38, 14, 56, -7);
+        ctx.quadraticCurveTo(36, 3, 0, 4);
+        ctx.quadraticCurveTo(-36, 3, -54, -4);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.strokeStyle = '#92582c';
+        ctx.lineWidth = 1.4;
+        ctx.stroke();
+
+        // Hanging bow lantern
+        ctx.strokeStyle = '#d97706';
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.moveTo(49, -4);
+        ctx.lineTo(54, -16);
+        ctx.lineTo(47, -16);
+        ctx.stroke();
+
+        ctx.fillStyle = b.lanternColor;
+        ctx.beginPath();
+        ctx.arc(47, -12, 4.2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Seated Rower Person (คนพายเรือ)
+        const rowLean = Math.sin(b.oarPhase) * 3;
+        ctx.fillStyle = b.shirtColor;
+        ctx.beginPath();
+        ctx.roundRect(-24 + rowLean * 0.4, -19, 13, 18, 4);
+        ctx.fill();
+
+        // Head + woven Thai farmer/river hat (งอบ)
+        ctx.fillStyle = '#fcd9b6';
+        ctx.beginPath();
+        ctx.arc(-17 + rowLean * 0.5, -25, 5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = b.hatColor;
+        ctx.beginPath();
+        ctx.moveTo(-28 + rowLean * 0.5, -26);
+        ctx.quadraticCurveTo(-17 + rowLean * 0.5, -36, -6 + rowLean * 0.5, -26);
+        ctx.closePath();
+        ctx.fill();
+
+        // Animated Oar dipping into water (ไม้พายจ้วงน้ำ)
+        const oarSwing = Math.sin(b.oarPhase) * 14;
+        const oarDip = Math.cos(b.oarPhase) * 4;
+        ctx.strokeStyle = '#d69e66';
+        ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        ctx.moveTo(-14 + rowLean * 0.4, -14);
+        ctx.lineTo(-4 - oarSwing, 15 + oarDip);
+        ctx.stroke();
+
+        // Oar blade
+        ctx.fillStyle = '#b4743e';
+        ctx.beginPath();
+        ctx.ellipse(-4 - oarSwing, 16 + oarDip, 3.5, 6, 0.3, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+      }
+
+      /* Draw each of the 6 distinct Krathong models directly on the water */
+      function drawFloatingKrathong(k, t) {
+        const scale = 0.58 + k.lane * 0.52;
+        const bobY = Math.sin(t * 0.0035 + k.bobPhase) * 2.5;
+        const flicker = 0.88 + 0.12 * Math.sin(t * 0.014 + k.glowPulse);
+
+        ctx.save();
+        ctx.translate(k.x, k.y + bobY);
+        ctx.scale(scale, scale);
+
+        // Warm candlelight reflection on water surface
+        const waterGlow = ctx.createRadialGradient(0, 16, 2, 0, 18, 36);
+        if (k.isPlayerCouple) {
+          waterGlow.addColorStop(0, `rgba(255, 224, 130, ${(0.55 * flicker).toFixed(2)})`);
+          waterGlow.addColorStop(0.5, 'rgba(244, 143, 177, 0.24)');
+        } else {
+          waterGlow.addColorStop(0, `rgba(255, 210, 110, ${(0.38 * flicker).toFixed(2)})`);
+          waterGlow.addColorStop(0.5, 'rgba(245, 158, 11, 0.12)');
+        }
+        waterGlow.addColorStop(1, 'rgba(245, 158, 11, 0)');
+        ctx.fillStyle = waterGlow;
+        ctx.beginPath();
+        ctx.ellipse(0, 18, 38, 13, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Distinct structural drawing per modelId
+        switch (k.modelId) {
+          case 'twin_swan': {
+            ctx.fillStyle = '#f8fafc';
+            ctx.beginPath();
+            ctx.ellipse(0, 8, 28, 8, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Left & Right swan necks forming heart
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 4;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(-12, 4);
+            ctx.bezierCurveTo(-20, -6, -16, -21, -5, -21);
+            ctx.bezierCurveTo(-1, -21, 0, -16, 0, -13);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(12, 4);
+            ctx.bezierCurveTo(20, -6, 16, -21, 5, -21);
+            ctx.bezierCurveTo(1, -21, 0, -16, 0, -13);
+            ctx.stroke();
+
+            ctx.fillStyle = '#fb7185';
+            ctx.beginPath();
+            ctx.arc(-6, 6, 3.2, 0, Math.PI * 2);
+            ctx.arc(6, 6, 3.2, 0, Math.PI * 2);
+            ctx.fill();
+
+            drawFlame(0, -8, flicker);
+            break;
+          }
+
+          case 'coconut_shell': {
+            ctx.fillStyle = '#5c3419';
+            ctx.beginPath();
+            ctx.arc(0, -1, 22, 0, Math.PI);
+            ctx.fill();
+
+            ctx.fillStyle = '#3b1f0e';
+            ctx.strokeStyle = '#f5c65d';
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            ctx.ellipse(0, -1, 22, 5.5, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // Orchid accent
+            ctx.fillStyle = '#c084fc';
+            ctx.beginPath();
+            ctx.arc(-11, -3, 4.2, 0, Math.PI * 2);
+            ctx.fill();
+
+            drawCandleStick(4, -2, '#fde68a', flicker);
+            break;
+          }
+
+          case 'heart_bread': {
+            ctx.fillStyle = '#d98a36';
+            ctx.strokeStyle = '#fbd38d';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(0, 15);
+            ctx.bezierCurveTo(-22, 11, -30, 2, -26, -4);
+            ctx.bezierCurveTo(-22, -10, -9, -9, 0, -2);
+            ctx.bezierCurveTo(9, -9, 22, -10, 26, -4);
+            ctx.bezierCurveTo(30, 2, 22, 11, 0, 15);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = '#f43f5e';
+            ctx.beginPath();
+            ctx.arc(-11, 2, 3.2, 0, Math.PI * 2);
+            ctx.arc(11, 2, 3.2, 0, Math.PI * 2);
+            ctx.fill();
+
+            drawCandleStick(-5, 0, '#fda4af', flicker);
+            drawCandleStick(5, 0, '#fda4af', flicker);
+            break;
+          }
+
+          case 'ice_crystal': {
+            const pts = [-26, -15, -5, 5, 15, 26];
+            pts.forEach((px, idx) => {
+              ctx.fillStyle = idx % 2 === 0 ? 'rgba(186, 230, 253, 0.78)' : 'rgba(240, 249, 255, 0.9)';
+              ctx.strokeStyle = '#ffffff';
+              ctx.lineWidth = 0.9;
+              ctx.beginPath();
+              ctx.moveTo(px - 8, 9);
+              ctx.lineTo(px, -10 - (idx === 2 || idx === 3 ? 5 : 0));
+              ctx.lineTo(px + 8, 9);
+              ctx.closePath();
+              ctx.fill();
+              ctx.stroke();
+            });
+            drawFlame(0, -10, flicker);
+            break;
+          }
+
+          case 'royal_barge': {
+            ctx.fillStyle = '#d97706';
+            ctx.strokeStyle = '#fde68a';
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            ctx.moveTo(-34, -6);
+            ctx.quadraticCurveTo(-24, 14, 0, 14);
+            ctx.quadraticCurveTo(24, 14, 34, -9);
+            ctx.quadraticCurveTo(22, 5, 0, 6);
+            ctx.quadraticCurveTo(-22, 5, -34, -6);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Tiered central spire
+            ctx.fillStyle = '#10b981';
+            ctx.fillRect(-9, 0, 18, 6);
+            ctx.fillStyle = '#ec4899';
+            ctx.fillRect(-6, -6, 12, 6);
+            ctx.fillStyle = '#fbbf24';
+            ctx.beginPath();
+            ctx.moveTo(-4, -6);
+            ctx.lineTo(4, -6);
+            ctx.lineTo(0, -15);
+            ctx.closePath();
+            ctx.fill();
+
+            drawFlame(0, -16, flicker);
+            break;
+          }
+
+          case 'lotus_leaf':
+          default: {
+            ctx.fillStyle = '#15803d';
+            ctx.beginPath();
+            ctx.ellipse(0, 9, 26, 7, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Pointed folded banana-leaf teeth
+            ctx.fillStyle = '#22c55e';
+            ctx.beginPath();
+            for (let i = -3; i <= 3; i++) {
+              const bx = i * 7;
+              ctx.moveTo(bx - 5, 7);
+              ctx.lineTo(bx, -5);
+              ctx.lineTo(bx + 5, 7);
+            }
+            ctx.fill();
+
+            // Pink lotus petals + marigolds
+            ctx.fillStyle = '#f472b6';
+            for (let i = -2; i <= 2; i++) {
+              ctx.beginPath();
+              ctx.arc(i * 6, 5, 3.6, 0, Math.PI * 2);
+              ctx.fill();
+            }
+            ctx.fillStyle = '#fbbf24';
+            ctx.beginPath();
+            ctx.arc(-8, 8, 2.8, 0, Math.PI * 2);
+            ctx.arc(0, 9, 3, 0, Math.PI * 2);
+            ctx.arc(8, 8, 2.8, 0, Math.PI * 2);
+            ctx.fill();
+
+            drawCandleStick(0, 3, '#fde68a', flicker);
+            break;
+          }
+        }
+
+        // Floating name tag ribbon for the player's romantic krathong
+        if (k.isPlayerCouple) {
+          ctx.font = '500 11px Prompt, sans-serif';
+          const label = `♥ ${k.title}`;
+          const textW = ctx.measureText(label).width;
+          const pillW = textW + 16;
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.82)';
+          ctx.strokeStyle = 'rgba(244, 143, 177, 0.75)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.roundRect(-pillW / 2, 18, pillW, 20, 10);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#fce7f3';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(label, 0, 28);
+        }
+
+        ctx.restore();
+      }
+
+      function drawCandleStick(x, baseY, waxColor, flicker) {
+        ctx.fillStyle = waxColor;
+        ctx.fillRect(x - 1.6, baseY - 12, 3.2, 12);
+        drawFlame(x, baseY - 12, flicker);
+      }
+
+      function drawFlame(x, tipBaseY, flicker) {
+        const glow = ctx.createRadialGradient(x, tipBaseY - 4, 1, x, tipBaseY - 4, 13 * flicker);
+        glow.addColorStop(0, 'rgba(255, 244, 180, 0.85)');
+        glow.addColorStop(1, 'rgba(251, 146, 60, 0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(x, tipBaseY - 4, 13 * flicker, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#fef08a';
+        ctx.beginPath();
+        ctx.moveTo(x, tipBaseY - 10 * flicker);
+        ctx.quadraticCurveTo(x + 3.5, tipBaseY - 4, x, tipBaseY);
+        ctx.quadraticCurveTo(x - 3.5, tipBaseY - 4, x, tipBaseY - 10 * flicker);
+        ctx.fill();
+      }
+
+      /* =====================================================================
+         6. SIMULATION UPDATE LOOP
+            - Shore NPCs periodically kneel and spawn krathongs of varied types
+            - Couple pier kneels and spawns user's romantic krathong
+            - Boaters actively steer & row along behind floating krathongs
+         ===================================================================== */
+      function updateSimulation(t) {
+        // 1. Update NPC characters along the bank floating krathongs
+        shoreCharacters.forEach((npc, idx) => {
+          if (npc.kneelTimer > 0) {
+            npc.kneelTimer--;
+            if (npc.kneelTimer === 34 && krathongs.length < 18) {
+              const model = KRATHONG_MODELS[npc.nextModelIdx % KRATHONG_MODELS.length];
+              npc.nextModelIdx++;
+              const ambient = AMBIENT_WISHES[(idx + npc.nextModelIdx) % AMBIENT_WISHES.length];
+              const spawnX = npc.rx * width + 10;
+              const lane = 0.16 + Math.random() * 0.22;
+              const newK = createKrathongObject({
+                x: spawnX,
+                lane,
+                modelId: model.id,
+                title: ambient.title,
+                wish: ambient.wish,
+                isPlayerCouple: false
+              });
+              // Start near pier and glide outward
+              newK.y = pierY + 12;
+              krathongs.push(newK);
+              ripples.push({ x: spawnX, y: pierY + 14, r: 4, alpha: 0.45 });
+            }
+          } else {
+            npc.cooldown--;
+            if (npc.cooldown <= 0) {
+              npc.kneelTimer = 85;
+              npc.cooldown = 360 + Math.floor(Math.random() * 260);
+            }
+          }
+        });
+
+        // 2. Update Central Romantic Couple Pier release animation
+        if (couplePierState.kneelTimer > 0) {
+          couplePierState.kneelTimer--;
+          if (couplePierState.kneelTimer === 40 && couplePierState.pendingSpawn) {
+            const data = couplePierState.pendingSpawn;
+            couplePierState.pendingSpawn = null;
+            const spawnX = width * 0.54;
+            const coupleKrathong = createKrathongObject({
+              x: spawnX,
+              lane: 0.44 + Math.random() * 0.18,
+              modelId: data.modelId,
+              title: data.title,
+              wish: data.wish,
+              isPlayerCouple: true
+            });
+            coupleKrathong.y = pierY + 18;
+            krathongs.push(coupleKrathong);
+            ripples.push({ x: spawnX, y: pierY + 20, r: 6, alpha: 0.65 });
+          }
+        }
+
+        // 3. Update Floating Krathongs (gentle current + lane settling)
+        for (let i = krathongs.length - 1; i >= 0; i--) {
+          const k = krathongs[i];
+          const targetY = riverTopY + (height - riverTopY) * k.lane;
+          k.y += (targetY - k.y) * 0.014;
+          k.x += k.vx;
+
+          k.spawnRippleTimer++;
+          if (k.spawnRippleTimer > 75) {
+            k.spawnRippleTimer = 0;
+            ripples.push({ x: k.x - 4, y: k.y + 8, r: 5, alpha: 0.25 });
+          }
+
+          // Wrap player couple krathongs gently so their romantic wish stays in the scene,
+          // while excess ambient krathongs wrap or cycle cleanly
+          if (k.x > width + 80) {
+            if (k.isPlayerCouple || krathongs.length <= 6) {
+              k.x = -60;
+            } else {
+              krathongs.splice(i, 1);
+            }
+          }
+        }
+
+        // 4. Update Rowboat Boaters following krathongs in the river
+        boaters.forEach((b, bIdx) => {
+          // Pick a target krathong on the river to follow alongside
+          let chosen = null;
+          if (b.preferCouple) {
+            chosen = krathongs.find((k) => k.isPlayerCouple && k.x > 20 && k.x < width - 20);
+          }
+          if (!chosen && krathongs.length > 0) {
+            chosen = krathongs[(bIdx * 2) % krathongs.length];
+          }
+
+          if (chosen) {
+            // Escort slightly behind and vertically offset so boat never covers the krathong
+            const followOffsetX = -85 - bIdx * 25;
+            const followOffsetY = bIdx === 0 ? 34 : -28;
+            const minRiverY = pierY + 28;
+            const maxRiverY = height - 36;
+            const desiredX = chosen.x + followOffsetX;
+            const desiredY = Math.max(minRiverY, Math.min(maxRiverY, chosen.y + followOffsetY));
+
+            const dx = desiredX - b.x;
+            const dy = desiredY - b.y;
+            const targetVx = Math.max(0.22, Math.min(1.15, chosen.vx + dx * 0.008));
+            b.vx += (targetVx - b.vx) * 0.04;
+            b.vy += (dy * 0.015 - b.vy) * 0.08;
+          } else {
+            b.vx = 0.4;
+            b.vy = 0;
+          }
+
+          b.x += b.vx;
+          b.y += b.vy;
+          b.oarPhase += 0.045 + Math.abs(b.vx) * 0.03;
+
+          if (b.x > width + 110) {
+            b.x = -100;
+          }
+        });
+
+        // 5. Update River Fish swimming & gathering around water taps / bread & couple krathongs
+        const minFishY = pierY + 22;
+        const maxFishY = height - 20;
+        fishes.forEach((f, idx) => {
+          let targetX = null;
+          let targetY = null;
+          let pull = 0.012;
+
+          // Priority 1: User tapped the water surface (waterBaits)
+          if (waterBaits.length > 0) {
+            const wb = waterBaits[idx % waterBaits.length];
+            const distBait = Math.hypot(wb.x - f.x, wb.y - f.y);
+            if (distBait < 260) {
+              targetX = wb.x;
+              targetY = wb.y;
+              pull = 0.038;
+              if (distBait < 16 && f.nibbleCooldown <= 0) {
+                ripples.push({ x: f.x, y: f.y, r: 3, alpha: 0.42 });
+                f.nibbleCooldown = 48;
+              }
+            }
+          }
+
+          // Priority 2: Swim curiously near bread krathongs or player's released krathong
+          if (targetX === null && krathongs.length > 0) {
+            const preferred = krathongs.find(
+              (k) => (k.modelId === 'heart_bread' || k.isPlayerCouple) && k.x > 30 && k.x < width - 30
+            );
+            if (preferred && idx % 2 === 0) {
+              const orbitAngle = t * 0.0014 + idx * 1.1;
+              targetX = preferred.x + Math.cos(orbitAngle) * 34;
+              targetY = Math.max(minFishY, Math.min(maxFishY, preferred.y + 14 + Math.sin(orbitAngle) * 14));
+              pull = 0.016;
+              if (Math.hypot(preferred.x - f.x, preferred.y + 12 - f.y) < 28 && f.nibbleCooldown <= 0) {
+                ripples.push({ x: f.x, y: f.y - 3, r: 2.5, alpha: 0.32 });
+                f.nibbleCooldown = 95;
+              }
+            }
+          }
+
+          if (f.nibbleCooldown > 0) f.nibbleCooldown--;
+
+          if (targetX !== null && targetY !== null) {
+            const dx = targetX - f.x;
+            const dy = targetY - f.y;
+            const d = Math.max(1, Math.hypot(dx, dy));
+            const desiredSpeed = pull > 0.025 ? 1.55 : 0.85;
+            f.vx += ((dx / d) * desiredSpeed - f.vx) * pull;
+            f.vy += ((dy / d) * desiredSpeed - f.vy) * pull;
+          } else {
+            // Gentle natural river patrol
+            const cruiseDir = f.vx >= 0 ? 1 : -1;
+            const baseVx = cruiseDir * (0.55 + (idx % 3) * 0.16);
+            f.vx += (baseVx - f.vx) * 0.02;
+            f.vy += (Math.sin(t * 0.0016 + idx) * 0.22 - f.vy) * 0.03;
+          }
+
+          // Keep horizontal momentum lively so fish don't stall vertically
+          if (Math.abs(f.vx) < 0.18) {
+            f.vx = (f.vx >= 0 ? 1 : -1) * 0.22;
+          }
+
+          f.x += f.vx;
+          f.y += f.vy;
+
+          if (f.y < minFishY) {
+            f.y = minFishY;
+            f.vy = Math.abs(f.vy) * 0.5;
+          } else if (f.y > maxFishY) {
+            f.y = maxFishY;
+            f.vy = -Math.abs(f.vy) * 0.5;
+          }
+
+          if (f.x > width + 45) f.x = -40;
+          if (f.x < -45) f.x = width + 40;
+
+          const speedMag = Math.hypot(f.vx, f.vy);
+          f.tailPhase += 0.12 + speedMag * 0.14;
+        });
+      }
+
+      function spawnSparkleBurst(cx, cy, count, color) {
+        for (let i = 0; i < count; i++) {
+          const ang = (Math.PI * 2 * i) / count + Math.random() * 0.4;
+          const spd = 0.5 + Math.random() * 1.4;
+          sparkles.push({
+            x: cx,
+            y: cy,
+            vx: Math.cos(ang) * spd,
+            vy: Math.sin(ang) * spd - 0.6,
+            r: 1.5 + Math.random() * 1.8,
+            life: 52 + Math.floor(Math.random() * 26),
+            maxLife: 78,
+            color: color || '255, 224, 138'
+          });
+        }
+      }
+
+      function renderFrame(t) {
+        ctx.clearRect(0, 0, width, height);
+        updateSimulation(t);
+
+        drawSkyAndMoon(t);
+        drawRiverSurface(t);
+        drawPierAndCharacters(t);
+
+        // Depth-sort boaters and krathongs by Y so foreground objects naturally overlap background
+        const waterDrawables = [];
+        krathongs.forEach((k) => waterDrawables.push({ type: 'krathong', y: k.y, ref: k }));
+        boaters.forEach((b) => waterDrawables.push({ type: 'boat', y: b.y, ref: b }));
+        waterDrawables.sort((a, b) => a.y - b.y);
+
+        waterDrawables.forEach((item) => {
+          if (item.type === 'boat') {
+            drawRowboat(item.ref, t);
+          } else {
+            drawFloatingKrathong(item.ref, t);
+          }
+        });
+
+        // Interactive golden/rose sparkles
+        for (let i = sparkles.length - 1; i >= 0; i--) {
+          const sp = sparkles[i];
+          sp.x += sp.vx;
+          sp.y += sp.vy;
+          sp.vy -= 0.008;
+          sp.life--;
+          if (sp.life <= 0) {
+            sparkles.splice(i, 1);
+            continue;
+          }
+          const alpha = Math.max(0, sp.life / sp.maxLife);
+          ctx.fillStyle = `rgba(${sp.color}, ${alpha.toFixed(2)})`;
+          ctx.beginPath();
+          ctx.arc(sp.x, sp.y, sp.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Warm golden fireflies drifting over the water
+        fireflies.forEach((f) => {
+          const fx = (f.rx * width + Math.sin(t * 0.0008 * f.speed + f.phase) * 28 + width) % width;
+          const fy = f.ry * height + Math.cos(t * 0.0011 * f.speed + f.phase) * 14;
+          const alpha = 0.25 + 0.55 * Math.max(0, Math.sin(t * 0.003 + f.phase));
+          ctx.fillStyle = `rgba(254, 240, 138, ${alpha.toFixed(2)})`;
+          ctx.beginPath();
+          ctx.arc(fx, fy, 1.8, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        requestAnimationFrame(renderFrame);
+      }
+
+      requestAnimationFrame(renderFrame);
+
+      /* =====================================================================
+         7. INTERACTIONS: FLOAT KRATHONG (SINGLE NAME), CALL FISH, SKY LANTERNS
+         ===================================================================== */
+      floatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const personName = loverInput.value.trim();
+        const wish = wishInput.value.trim();
+
+        if (!personName) {
+          formError.textContent = 'กรุณาระบุชื่อก่อนปล่อยกระทง';
+          loverInput.focus();
+          return;
+        }
+        if (!wish) {
+          formError.textContent = 'กรุณาเขียนคำอธิษฐานถึงคนรัก';
+          wishInput.focus();
+          return;
+        }
+
+        formError.textContent = '';
+
+        couplePierState.pendingSpawn = {
+          modelId: selectedModelId,
+          title: personName,
+          wish
+        };
+        couplePierState.kneelTimer = 90;
+
+        spawnSparkleBurst(width * 0.54, pierY - 12, 16, '244, 143, 177');
+        playGentleEffect('release');
+
+        wishInput.value = '';
+
+        // On mobile/tablet narrow viewports, collapse drawer so user sees their release immediately
+        if (window.innerWidth < 1024) {
+          setDrawerOpen(false);
+        }
+      });
+
+      canvas.addEventListener('click', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+
+        // 1. Check front-most krathongs first
+        let hit = null;
+        let bestDist = Infinity;
+        for (let i = 0; i < krathongs.length; i++) {
+          const k = krathongs[i];
+          const hitRadius = 32 * (0.58 + k.lane * 0.52);
+          const dx = mx - k.x;
+          const dy = my - k.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist <= hitRadius && dist < bestDist) {
+            bestDist = dist;
+            hit = k;
+          }
+        }
+
+        if (hit) {
+          openWishModal(hit);
+          return;
+        }
+
+        // 2. Interactive Gimmick: Tap the river water to create ripples & summon fish
+        if (my >= pierY + 10) {
+          ripples.push({ x: mx, y: my, r: 4, alpha: 0.65 });
+          ripples.push({ x: mx, y: my, r: 12, alpha: 0.35 });
+          for (let i = 0; i < 3; i++) {
+            waterBaits.push({
+              x: mx + (Math.random() - 0.5) * 22,
+              y: Math.min(height - 18, Math.max(pierY + 20, my + (Math.random() - 0.5) * 14)),
+              life: 150
+            });
+          }
+          if (waterBaits.length > 12) {
+            waterBaits.splice(0, waterBaits.length - 12);
+          }
+          spawnSparkleBurst(mx, my - 4, 8, '254, 240, 138');
+          playGentleEffect('water');
+          return;
+        }
+
+        // 3. Interactive Gimmick: Tap the night sky to release a glowing sky lantern (โคมลอย)
+        if (my < riverTopY - 12 && skyLanterns.length < 28) {
+          skyLanterns.push({
+            rx: mx / width,
+            ry: my / height,
+            size: 8 + Math.random() * 5,
+            vx: 0.004 + Math.random() * 0.005,
+            vy: -0.0045 - Math.random() * 0.004,
+            sway: Math.random() * Math.PI * 2
+          });
+          spawnSparkleBurst(mx, my, 10, '255, 210, 120');
+          playGentleEffect('lantern');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
